@@ -1,17 +1,18 @@
 package ru.lanit.provider;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.util.logging.Logger;
 
-public class SessionFactoryProvider {
+public class SessionProvider {
 
-    private static SessionFactoryProvider instance;
+    private static SessionProvider instance;
     private SessionFactory sessionFactory;
     private Logger logger;
 
-    private SessionFactoryProvider(){
+    private SessionProvider(){
         initLoger();
         try {
             sessionFactory = (new Configuration()).configure().buildSessionFactory();
@@ -24,14 +25,14 @@ public class SessionFactoryProvider {
         logger = Logger.getLogger(this.getClass().getName());
     }
 
-    public static SessionFactoryProvider getInstance(){
+    public static SessionProvider getInstance(){
         if(instance == null){
-            instance  = new SessionFactoryProvider();
+            instance  = new SessionProvider();
         }
         return instance;
     }
 
-    public SessionFactory getSessionFactory(){
-        return this.sessionFactory;
+    public Session getSession(){
+        return this.sessionFactory.openSession();
     }
 }

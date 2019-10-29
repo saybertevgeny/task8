@@ -3,7 +3,7 @@ package ru.lanit.servlet;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.lanit.exception.MappingException;
-import ru.lanit.provider.SessionFactoryProvider;
+import ru.lanit.provider.SessionProvider;
 import ru.lanit.entity.Person;
 import ru.lanit.mapper.request.PersonMapper;
 import javax.servlet.ServletException;
@@ -18,8 +18,7 @@ public class SavePersonServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         boolean existError = false;
-        try (SessionFactory sessionFactory = SessionFactoryProvider.getInstance().getSessionFactory()) {
-            Session session = sessionFactory.openSession();
+        try ( Session session  = SessionProvider.getInstance().getSession()) {
             session.beginTransaction();
             Person person = PersonMapper.map(request);
             session.save(person);
